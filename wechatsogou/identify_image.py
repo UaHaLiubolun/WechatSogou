@@ -6,6 +6,7 @@ import time
 
 import requests
 
+from wechatsogou.feifei import FateadmApi
 from wechatsogou.five import readimg, input
 from wechatsogou.filecache import WechatCache
 from wechatsogou.exceptions import WechatSogouVcodeOcrException
@@ -29,6 +30,21 @@ def identify_image_callback_by_hand(img):
     im = readimg(img)
     im.show()
     return input("please input code: ")
+
+def identify_image_callback_by_feifei(img):
+    pd_id = "105040"  # 用户信息页可以查询到pd信息
+    pd_key = "7FHyfRlVN94qrLzQyAavEFgykFFkG0Jx"
+    app_id = "305040" # 开发者分成用的账号，在开发者中心可以查询到
+    app_key = " 2aWqzFyD23aSUhMfAZ2/KAP9LO5Jk3aR"
+    # 识别类型，
+    # 具体类型可以查看官方网站的价格页选择具体的类型，不清楚类型的，可以咨询客服
+    pred_type = "30600"
+    api = FateadmApi(app_id, app_key, pd_id, pd_key)
+    api.QueryBalc()
+    # 如果不是通过文件识别，则调用Predict接口
+    rsp = api.Predict(pred_type, img)
+    if rsp.ret_code == 0.0:
+        return rsp.pred_rsp.value
 
 
 def unlock_sogou_callback_example(url, req, resp, img, identify_image_callback):

@@ -22,4 +22,5 @@ test/.hypothesis/
 t.py
 y.py
 tencent_captcha/
+test/_*
 docs/src/node_modules/
